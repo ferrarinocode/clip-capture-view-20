@@ -31,9 +31,9 @@ const VideoModal = ({ video, embedUrl, onClose }: VideoModalProps) => {
           
           <div className="space-y-4">
             <h3 className="text-lg font-light text-white">Descrição</h3>
-            <p className="text-slate-400 leading-relaxed">
+            <div className="text-slate-400 leading-relaxed whitespace-pre-line">
               {video.description}
-            </p>
+            </div>
           </div>
         </div>
       </DialogContent>

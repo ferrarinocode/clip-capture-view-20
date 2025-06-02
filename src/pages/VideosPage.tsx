@@ -1,34 +1,25 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Play, ArrowLeft } from 'lucide-react';
+import { Search, Play, ArrowLeft, Loader2 } from 'lucide-react';
 import { Video } from '@/types/Video';
 import VideoModal from '@/components/VideoModal';
 import { useNavigate } from 'react-router-dom';
+import { useVideos } from '@/hooks/useVideos';
 import Footer from '@/components/Footer';
 
 const VideosPage = () => {
   const navigate = useNavigate();
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
+  const { videos, loading } = useVideos();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
 
-  useEffect(() => {
-    const storedVideos = JSON.parse(localStorage.getItem('videos') || '[]');
-    setVideos(storedVideos);
-    setFilteredVideos(storedVideos);
-  }, []);
-
-  useEffect(() => {
-    const filtered = videos.filter(video =>
-      video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      video.theme.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredVideos(filtered);
-  }, [searchTerm, videos]);
+  const filteredVideos = videos.filter(video =>
+    video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    video.theme.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const getVideoEmbedUrl = (url: string) => {
     // YouTube
@@ -47,6 +38,17 @@ const VideosPage = () => {
 
     return '';
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-cyan-400 mx-auto mb-4" />
+          <p className="text-white">Carregando vídeos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative flex flex-col">
@@ -71,12 +73,11 @@ const VideosPage = () => {
               />
             </div>
             
-            <div className="w-20"></div> {/* Spacer for centering */}
+            <div className="w-20"></div>
           </div>
         </div>
       </header>
 
-      {/* Content */}
       <div className="flex-1">
         <div className="container mx-auto px-6 py-12">
           <div className="mb-12">

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,18 +6,43 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useUser } from '@/contexts/UserContext';
+import { useUsers } from '@/hooks/useUsers';
 import { Video, Shield, Clock } from 'lucide-react';
 
 const CapturePage = () => {
   const navigate = useNavigate();
   const { setUser } = useUser();
+  const { addUser, loading } = useUsers();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     whatsapp: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const formatWhatsApp = (value: string) => {
+    // Remove tudo que não é número
+    const numbers = value.replace(/\D/g, '');
+    
+    // Aplica a máscara (0XX) X XXXX-XXXX
+    if (numbers.length <= 2) {
+      return `(0${numbers}`;
+    } else if (numbers.length <= 3) {
+      return `(0${numbers.slice(1, 3)})`;
+    } else if (numbers.length <= 4) {
+      return `(0${numbers.slice(1, 3)}) ${numbers.slice(3)}`;
+    } else if (numbers.length <= 8) {
+      return `(0${numbers.slice(1, 3)}) ${numbers.slice(3, 4)} ${numbers.slice(4)}`;
+    } else {
+      return `(0${numbers.slice(1, 3)}) ${numbers.slice(3, 4)} ${numbers.slice(4, 8)}-${numbers.slice(8, 12)}`;
+    }
+  };
+
+  const handleWhatsAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatWhatsApp(e.target.value);
+    setFormData({ ...formData, whatsapp: formatted });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.whatsapp) {
@@ -35,17 +59,22 @@ const CapturePage = () => {
       isAdmin: false
     };
 
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    localStorage.setItem('users', JSON.stringify([...existingUsers, userData]));
+    const result = await addUser(userData);
 
-    setUser(userData);
-
-    toast({
-      title: "Bem-vindo",
-      description: "Acesso liberado"
-    });
-
-    navigate('/videos');
+    if (result.success) {
+      setUser(userData);
+      toast({
+        title: "Bem-vindo",
+        description: "Acesso liberado"
+      });
+      navigate('/videos');
+    } else {
+      toast({
+        title: "Erro",
+        description: "Erro ao realizar cadastro. Tente novamente.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -150,18 +179,20 @@ const CapturePage = () => {
                 <div className="space-y-2">
                   <Label className="text-slate-300 font-light text-sm">WhatsApp</Label>
                   <Input
-                    placeholder="(11) 99999-9999"
+                    placeholder="(0XX) X XXXX-XXXX"
                     value={formData.whatsapp}
-                    onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                    onChange={handleWhatsAppChange}
+                    maxLength={17}
                     className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
                   />
                 </div>
 
                 <Button 
                   type="submit" 
+                  disabled={loading}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 border-0 text-white font-medium h-14 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Acessar Agora
+                  {loading ? 'Processando...' : 'Acessar Agora'}
                 </Button>
                 
                 <p className="text-xs text-slate-500 text-center">

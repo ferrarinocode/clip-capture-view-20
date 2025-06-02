@@ -8,15 +8,18 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useVideos } from '@/hooks/useVideos';
 import Footer from '@/components/Footer';
 
 const AdminAddVideo = () => {
   const navigate = useNavigate();
+  const { addVideo } = useVideos();
   const [formData, setFormData] = useState({
     videoUrl: '',
     title: '',
     description: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const getVideoThumbnail = (url: string) => {
     // YouTube thumbnail
@@ -36,7 +39,7 @@ const AdminAddVideo = () => {
     return '';
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.videoUrl || !formData.title || !formData.description) {
@@ -48,23 +51,32 @@ const AdminAddVideo = () => {
       return;
     }
 
+    setLoading(true);
+
     const newVideo = {
-      id: Date.now().toString(),
       ...formData,
+      videoUrl: formData.videoUrl,
       theme: 'Geral',
-      thumbnail: getVideoThumbnail(formData.videoUrl),
-      createdAt: new Date()
+      thumbnail: getVideoThumbnail(formData.videoUrl)
     };
 
-    const existingVideos = JSON.parse(localStorage.getItem('videos') || '[]');
-    localStorage.setItem('videos', JSON.stringify([...existingVideos, newVideo]));
+    const result = await addVideo(newVideo);
 
-    toast({
-      title: "Sucesso",
-      description: "Vídeo adicionado"
-    });
+    if (result.success) {
+      toast({
+        title: "Sucesso",
+        description: "Vídeo adicionado"
+      });
+      navigate('/videos');
+    } else {
+      toast({
+        title: "Erro",
+        description: "Erro ao adicionar vídeo. Tente novamente.",
+        variant: "destructive"
+      });
+    }
 
-    navigate('/videos');
+    setLoading(false);
   };
 
   return (
@@ -125,9 +137,10 @@ const AdminAddVideo = () => {
 
                 <Button 
                   type="submit" 
+                  disabled={loading}
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 border-0 text-white font-light h-12"
                 >
-                  Adicionar Vídeo
+                  {loading ? 'Adicionando...' : 'Adicionar Vídeo'}
                 </Button>
               </form>
             </CardContent>
