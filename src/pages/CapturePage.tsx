@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useUser } from '@/contexts/UserContext';
-import { Play, Star, Users } from 'lucide-react';
+import { Play, Star, Users, Shield, Clock, Video } from 'lucide-react';
 
 const CapturePage = () => {
   const navigate = useNavigate();
@@ -50,106 +50,123 @@ const CapturePage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"></div>
-      <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
-      <div className="absolute bottom-20 right-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-xl"></div>
+      {/* Modern gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.02"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
       
-      <div className="max-w-4xl w-full relative z-10">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-6">
+      {/* Floating elements for depth */}
+      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+      <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-1000"></div>
+      <div className="absolute bottom-1/4 left-3/4 w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse delay-500"></div>
+      
+      <div className="max-w-5xl w-full relative z-10">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center mb-8">
             <img 
               src="/lovable-uploads/1ff3596d-8e93-4799-8645-6f69d3dbd8d1.png" 
-              alt="Lon Systems"
-              className="h-12 w-auto mr-3"
+              alt="Logo"
+              className="h-16 w-auto"
             />
-            <h1 className="text-5xl font-light text-white tracking-wide">Lon Systems</h1>
           </div>
           
-          <div className="max-w-3xl mx-auto mb-8">
-            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 leading-tight">
-              Tenha acesso a um conteúdo <span className="text-cyan-400">exclusivo</span> de vídeos do evento
-            </h2>
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-              Deixe seus dados e acesse agora mesmo uma biblioteca completa com os melhores momentos e apresentações. Conteúdo premium disponível apenas para participantes cadastrados.
-            </p>
+          <div className="max-w-4xl mx-auto mb-12">
+            <h1 className="text-4xl md:text-6xl font-light text-white mb-8 leading-tight tracking-tight">
+              Tenha acesso a um conteúdo <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-medium">exclusivo</span> de vídeos
+            </h1>
             
-            {/* Benefits */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="flex items-center justify-center space-x-3 text-slate-300">
-                <div className="p-2 bg-cyan-500/20 rounded-full">
-                  <Play className="w-5 h-5 text-cyan-400" />
+            {/* Modern benefits grid */}
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <div className="group">
+                <div className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-cyan-400/40">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg">
+                      <Video className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-medium text-white mb-2">Vídeos Exclusivos</h3>
+                  <p className="text-slate-400 text-sm">Acesso completo à biblioteca de conteúdos</p>
                 </div>
-                <span>Vídeos Exclusivos</span>
               </div>
-              <div className="flex items-center justify-center space-x-3 text-slate-300">
-                <div className="p-2 bg-blue-500/20 rounded-full">
-                  <Star className="w-5 h-5 text-blue-400" />
+              
+              <div className="group">
+                <div className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-indigo-400/40">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+                      <Shield className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-medium text-white mb-2">Conteúdo Premium</h3>
+                  <p className="text-slate-400 text-sm">Material de alta qualidade e curado</p>
                 </div>
-                <span>Conteúdo Premium</span>
               </div>
-              <div className="flex items-center justify-center space-x-3 text-slate-300">
-                <div className="p-2 bg-purple-500/20 rounded-full">
-                  <Users className="w-5 h-5 text-purple-400" />
+              
+              <div className="group">
+                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-600/10 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-emerald-400/40">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg">
+                      <Clock className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-medium text-white mb-2">Acesso Imediato</h3>
+                  <p className="text-slate-400 text-sm">Liberação instantânea após cadastro</p>
                 </div>
-                <span>Acesso Imediato</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="max-w-md mx-auto">
-          <Card className="glass-card border-0 shadow-2xl">
+        <div className="max-w-lg mx-auto">
+          <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl font-light text-white">
-                Acesse Agora
+                Libere seu acesso
               </CardTitle>
               <p className="text-slate-400 text-sm">
-                Preencha os dados abaixo para liberar seu acesso
+                Preencha os dados abaixo para começar
               </p>
             </CardHeader>
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-slate-300 font-light">Nome Completo</Label>
+                  <Label className="text-slate-300 font-light text-sm">Nome Completo</Label>
                   <Input
                     placeholder="Digite seu nome completo"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="glass border-slate-600 text-white placeholder:text-slate-400 h-12"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-300 font-light">E-mail</Label>
+                  <Label className="text-slate-300 font-light text-sm">E-mail</Label>
                   <Input
                     type="email"
                     placeholder="Digite seu melhor e-mail"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="glass border-slate-600 text-white placeholder:text-slate-400 h-12"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-300 font-light">WhatsApp</Label>
+                  <Label className="text-slate-300 font-light text-sm">WhatsApp</Label>
                   <Input
                     placeholder="(11) 99999-9999"
                     value={formData.whatsapp}
                     onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                    className="glass border-slate-600 text-white placeholder:text-slate-400 h-12"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
                   />
                 </div>
 
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 border-0 text-white font-light h-14 text-lg"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 border-0 text-white font-medium h-14 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  🚀 Acessar Conteúdo Exclusivo
+                  Acessar Agora
                 </Button>
                 
-                <p className="text-xs text-slate-400 text-center">
-                  Seus dados estão seguros e não serão compartilhados
+                <p className="text-xs text-slate-500 text-center">
+                  Seus dados estão protegidos e não serão compartilhados
                 </p>
               </form>
             </CardContent>
