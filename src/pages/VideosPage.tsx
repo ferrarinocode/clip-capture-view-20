@@ -16,7 +16,6 @@ const VideosPage = () => {
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
 
   useEffect(() => {
-    // Load videos from localStorage for demo purposes
     const storedVideos = JSON.parse(localStorage.getItem('videos') || '[]');
     setVideos(storedVideos);
     setFilteredVideos(storedVideos);
@@ -39,38 +38,35 @@ const VideosPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen relative">
+      <div className="container mx-auto px-6 py-8">
         <div className="mb-8">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/')}
-            className="mb-4"
+            className="mb-6 text-white hover:bg-white/10"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
           </Button>
           
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Biblioteca de Vídeos</h1>
-          <p className="text-gray-600 text-lg">Explore nosso conteúdo educacional</p>
-        </div>
+          <h1 className="text-4xl font-light text-white mb-8">Biblioteca</h1>
 
-        <div className="mb-8">
           <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
             <Input
-              placeholder="Buscar por título ou tema..."
+              placeholder="Buscar vídeos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white shadow-sm border-gray-200 focus:ring-2 focus:ring-blue-500"
+              className="pl-10 glass border-slate-600 text-white placeholder:text-slate-400"
             />
           </div>
         </div>
 
         {filteredVideos.length === 0 ? (
           <div className="text-center py-16">
-            <div className="text-gray-500 text-lg">
-              {searchTerm ? 'Nenhum vídeo encontrado para sua busca.' : 'Nenhum vídeo disponível ainda.'}
+            <div className="text-slate-400 text-lg">
+              {searchTerm ? 'Nenhum vídeo encontrado.' : 'Nenhum vídeo disponível.'}
             </div>
           </div>
         ) : (
@@ -78,7 +74,7 @@ const VideosPage = () => {
             {filteredVideos.map((video) => (
               <Card 
                 key={video.id} 
-                className="group hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer border-0 shadow-lg overflow-hidden"
+                className="glass-card group hover:scale-105 transition-all duration-300 cursor-pointer border-0 shadow-xl overflow-hidden"
                 onClick={() => setSelectedVideo(video)}
               >
                 <div className="relative">
@@ -87,27 +83,24 @@ const VideosPage = () => {
                     alt={video.title}
                     className="w-full h-48 object-cover"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-white rounded-full p-3">
-                      <Play className="w-8 h-8 text-blue-600" />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                      <Play className="w-8 h-8 text-white" />
                     </div>
-                  </div>
-                  <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    {video.theme}
                   </div>
                 </div>
                 
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-light text-lg mb-2 text-white group-hover:text-blue-400 transition-colors">
                     {video.title}
                   </h3>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">
                     {video.description}
                   </p>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="w-full group-hover:bg-blue-600 group-hover:text-white transition-all duration-200"
+                    className="w-full border-slate-600 text-slate-300 hover:bg-white/10 hover:text-white"
                   >
                     Ver mais
                   </Button>

@@ -11,14 +11,11 @@ interface VideoModalProps {
 const VideoModal = ({ video, embedUrl, onClose }: VideoModalProps) => {
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto glass-card border-slate-600">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-900 mb-2">
+          <DialogTitle className="text-2xl font-light text-white mb-4">
             {video.title}
           </DialogTitle>
-          <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
-            {video.theme}
-          </div>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -33,8 +30,8 @@ const VideoModal = ({ video, embedUrl, onClose }: VideoModalProps) => {
           </div>
           
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Sobre este vídeo</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <h3 className="text-lg font-light text-white">Descrição</h3>
+            <p className="text-slate-400 leading-relaxed">
               {video.description}
             </p>
           </div>
